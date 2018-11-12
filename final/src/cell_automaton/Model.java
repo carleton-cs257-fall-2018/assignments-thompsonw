@@ -6,6 +6,8 @@ package cell_automaton;
 
 
 public class Model {
+
+
     /*
      *Creates two values for a cell to take on: alive or dead.
      */
@@ -16,6 +18,7 @@ public class Model {
     private int generation;
     private boolean clear;
     private CellValue[][] grid;
+
 
     /*
      * The exact size of the grid may be specified before the simulation begins
@@ -28,6 +31,7 @@ public class Model {
         this.clear = clear;
         this.generation = 1;
     }
+
 
     /*
      * This method scans the entire grid cell by cell, and according to the rules of the "Game of Life" set forth
@@ -47,6 +51,7 @@ public class Model {
             }
         }
     }
+
 
     /*
      * This is the method that checks one particular cell against the rules of the game and determines whether it lives or dies.
@@ -75,6 +80,7 @@ public class Model {
         return futureStatus;
     }
 
+
     /*
      * Get method for the most recent generation
      * @ returns Returns the integer value of the generation
@@ -99,6 +105,7 @@ public class Model {
             }
         }
     }
+
 
     /*
      * The "Game of Life" rules are centered around the neighboring cells of any given cell. This method checks
@@ -154,6 +161,7 @@ public class Model {
         return numNeighbors;
     }
 
+    
     /*
      * Get method for the status of a cell
      * @param row Row of the cell
