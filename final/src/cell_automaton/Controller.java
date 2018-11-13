@@ -1,14 +1,14 @@
-
-package cell_automaton;
 /*
  @author Will Thompson"
  Controller for GUI Project, CS257
 */
 
+package cell_automaton;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
-]import javafx.application.Platform;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -20,23 +20,28 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Controller implements EventHandler<KeyEvent> {
-    final private double FRAMES_PER_SECOND = 30.0;
 
+    final private double FRAMES_PER_SECOND = 30.0;
     @FXML private Button NextGeneration;
-    @FXML private Button Run_Simulation;
     @FXML private Button Reset;
     @FXML private Button Pause;
     @FXML private int rowCount;
     @FXML private int columnCount;
     @FXML private View view;
-
     private Model model;
     private boolean paused;
     private Timer timer;
 
 
 
-    public Controller(){
+    public Controller()
+    {
+        this.model = model;
+        this.view = view;
+        Button NextGeneration = new Button("Next Generation");
+        Button Run_Simulation = new Button("Run Simulation");
+        Button Reset = new Button("Reset");
+        Button Pause = new Button("Pause");
     }
 
     /*
@@ -44,7 +49,21 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     private void startTimer()
     {
+        this.timer = new java.util.Timer();
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run()
+                    {
+                        model.createNextGeneration();
+                        view.update(model);
+                    }
+                });
+            }
+        };
 
+        long frameTimeInMilliseconds = (long)(1000.0 / FRAMES_PER_SECOND);
+        this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 
     /*
@@ -52,8 +71,17 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     private void update()
     {
-
+        this.view.update(this.model);
     }
+
+    @Override
+    public void handle(KeyEvent keyEvent)
+    {
+        this.NextGeneration.setOnAction(this::handleNextGenerationButton);
+        this.Pause.setOnAction(this::handlePauseButton);
+        this.Reset.setOnAction(this::handleResetButton);
+    }
+
 
     /*
      * This method will handle the application's behavior when the Pause Button is clicked
@@ -61,25 +89,33 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     public void handlePauseButton (ActionEvent actionevent)
     {
-
-    }
-
-    /*
-     * This method will handle the application's behavior when the Play Button is clicked
-     * @param actionevent The event when Play button is clicked
-     */
-    public void handlePlayButton (ActionEvent actionevent)
-    {
-
+        if (this.paused)
+        {
+            this.Pause.setText("Pause");
+            this.startTimer();
+        }
+        else
+        {
+            this.Pause.setText("Continue");
+            this.timer.cancel();
+        }
+        this.paused = !this.paused;
     }
 
     /*
      * This method will handle the application's behavior when one cell is clicked on and activated
      * @param actionevent The event when a cell is clicked
      */
-    public void handleCellSelection (ActionEvent actionevent)
+    public void handleCellSelection (ActionEvent actionevent, int row, int column)
     {
-
+        if (this.model.getCellValue(row, column) == Model.CellValue.EMPTY)
+        {
+            this.model.setCelltoLive(row, column);
+        }
+        else
+        {
+            this.model.setCelltoEmpty(row, column);
+        }
     }
 
     /*
@@ -88,7 +124,7 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     public void handleResetButton (ActionEvent actionevent)
     {
-
+        this.model.clearGrid();
     }
 
     /*
@@ -97,6 +133,9 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     public void handleNextGenerationButton (ActionEvent actionevent)
     {
-
+        this.paused = true;
+        this.model.createNextGeneration();
     }
+
+
 }

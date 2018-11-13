@@ -1,8 +1,9 @@
-package cell_automaton;
 /*
  *@author Will Thompson
  * View for the GUI Project, CS257
  */
+
+package cell_automaton;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ public class View {
         public final static double CELL_WIDTH = 10.0;
         @FXML private int rowCount;
         @FXML private int columnCount;
+        private Model model;
         private Rectangle[][] gridView;
 
         public View(){
@@ -27,20 +29,20 @@ public class View {
          */
         private void initializeGrid()
         {
-                if (this.rowCount > 0 && this.columnCount > 0)
+            if (this.rowCount > 0 && this.columnCount > 0)
+            {
                 this.gridView = new Rectangle[this.rowCount][this.columnCount];
-                for (int row = 0; row < this.rowCount; row++)
-                {
-                        for (int column = 0; column < this.columnCount; column++)
-                        {
-                                Rectangle rectangle = new Rectangle();
-                                rectangle.setX((double)column * CELL_WIDTH);
-                                rectangle.setY((double)row * CELL_WIDTH);
-                                rectangle.setWidth(CELL_WIDTH);
-                                rectangle.setHeight(CELL_WIDTH);
-                                this.gridView[row][column] = rectangle;
-                        }
+                for (int row = 0; row < this.rowCount; row++) {
+                    for (int column = 0; column < this.columnCount; column++) {
+                        Rectangle rectangle = new Rectangle();
+                        rectangle.setX((double) column * CELL_WIDTH);
+                        rectangle.setY((double) row * CELL_WIDTH);
+                        rectangle.setWidth(CELL_WIDTH);
+                        rectangle.setHeight(CELL_WIDTH);
+                        this.gridView[row][column] = rectangle;
+                    }
                 }
+            }
         }
 
         /*
@@ -49,20 +51,21 @@ public class View {
          */
         public void update(Model model)
         {
-                for (int row = 0; row < this.rowCount; row++) {
-                        for (int column = 0; column < this.columnCount; column++) {
-                                Model.CellValue cellValue = model.getCellValue(row, column);
-                                if (cellValue == Model.CellValue.EMPTY)
-                                {
-                                        this.gridView[row][column].setFill(Color.BLACK);
-                                }
-                                else
-                                {
-                                        this.gridView[row][column].setFill(Color.WHITE);
-                                }
-
-                        }
+            for (int row = 0; row < this.rowCount; row++)
+            {
+                for (int column = 0; column < this.columnCount; column++)
+                {
+                    Model.CellValue cellValue = model.getCellValue(row, column);
+                    if (cellValue == Model.CellValue.EMPTY)
+                    {
+                        this.gridView[row][column].setFill(Color.BLACK);
+                    }
+                    else
+                    {
+                        this.gridView[row][column].setFill(Color.WHITE);
+                    }
                 }
+            }
         }
 }
 

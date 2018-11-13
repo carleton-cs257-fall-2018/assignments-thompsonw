@@ -1,9 +1,8 @@
-package cell_automaton;
 /*
  @author Will Thompson"
  Model for GUI Project, CS257
 */
-
+package cell_automaton;
 
 public class Model {
 
@@ -15,6 +14,7 @@ public class Model {
     {
         EMPTY, LIVE
     }
+
     private int generation;
     private boolean clear;
     private CellValue[][] grid;
@@ -47,7 +47,7 @@ public class Model {
         {
             for (int column = 0; column < columnCount; column++)
             {
-                this.grid[row][column] = this.determineCellStatus(row,column);
+                this.grid[row][column] = this.determineFutureCellStatus(row,column);
             }
         }
     }
@@ -59,7 +59,7 @@ public class Model {
      * @param column Specifies the column the cell is in.
      * @returns Returns the future status of the cell, which is either CellValue.LIVE or CellValue.EMPTY.
      */
-    public CellValue determineCellStatus (int row, int column)
+    private CellValue determineFutureCellStatus (int row, int column)
     {
         int numNeighbors = this.getCellNeighbors(row, column);
         CellValue currentStatus = this.getCellValue(row,column);
@@ -80,15 +80,6 @@ public class Model {
         return futureStatus;
     }
 
-
-    /*
-     * Get method for the most recent generation
-     * @ returns Returns the integer value of the generation
-     */
-    public int getGeneration()
-    {
-        return this.generation;
-    }
 
     /*
      * Clears the grid of all active cells. Will be called in the event a user wishes to reset the simulation and
@@ -114,7 +105,7 @@ public class Model {
      * @param column Column that the cell is in
      * @returns Returns the number of active cells surrounding a given cell.
      */
-    public int getCellNeighbors (int row, int column)
+    private int getCellNeighbors (int row, int column)
     {
         int numNeighbors = 0;
 
@@ -161,7 +152,15 @@ public class Model {
         return numNeighbors;
     }
 
-    
+    /*
+     * Get method for the most recent generation
+     * @ returns Returns the integer value of the generation
+     */
+    public int getGeneration()
+    {
+        return this.generation;
+    }
+
     /*
      * Get method for the status of a cell
      * @param row Row of the cell
@@ -173,4 +172,18 @@ public class Model {
         assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
         return this.grid[row][column];
     }
+
+    public void setCelltoLive(int row, int column)
+    {
+        assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
+        this.grid[row][column] = CellValue.LIVE;
+    }
+
+    public void setCelltoEmpty(int row, int column)
+    {
+        assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
+        this.grid[row][column] = CellValue.EMPTY;
+    }
+
+
 }
