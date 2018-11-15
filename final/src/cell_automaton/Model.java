@@ -6,19 +6,12 @@ package cell_automaton;
 
 public class Model {
 
-
-    /*
-     *Creates two values for a cell to take on: alive or dead.
-     */
     public enum CellValue
     {
         EMPTY, LIVE
     }
-
     private int generation;
-    private boolean clear;
     private CellValue[][] grid;
-
 
     /*
      * The exact size of the grid may be specified before the simulation begins
@@ -28,7 +21,6 @@ public class Model {
     public Model(int rowCount, int columnCount)
     {
         this.grid = new CellValue[rowCount][columnCount];
-        this.clear = clear;
         this.generation = 1;
     }
 

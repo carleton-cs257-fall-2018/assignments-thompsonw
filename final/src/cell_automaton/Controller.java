@@ -7,41 +7,51 @@ package cell_automaton;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Controller implements EventHandler<KeyEvent> {
+public class Controller {
 
     final private double FRAMES_PER_SECOND = 30.0;
-    @FXML private Button NextGeneration;
-    @FXML private Button Reset;
-    @FXML private Button Pause;
-    @FXML private int rowCount;
-    @FXML private int columnCount;
+    @FXML private Button nextGenerationButton;
+    @FXML private Button resetButton;
+    @FXML private Button pauseButton;
     @FXML private View view;
     private Model model;
     private boolean paused;
     private Timer timer;
 
 
-
     public Controller()
     {
         this.model = model;
         this.view = view;
-        Button NextGeneration = new Button("Next Generation");
-        Button Run_Simulation = new Button("Run Simulation");
-        Button Reset = new Button("Reset");
-        Button Pause = new Button("Pause");
+    }
+
+    public void initialize()
+    {
+        this.model = new Model(this.view.getRowCount(), this.view.getColumnCount());
+        this.nextGenerationButton.setOnAction(this::handleNextGenerationButton);
+        this.pauseButton.setOnAction(this::handlePauseButton);
+        this.resetButton.setOnAction(this::handleResetButton);
+        this.update();
+    }
+
+    private void update()
+    {
+        this.view.update(this.model);
+    }
+
+    public double getBoardWidth() {
+        return view.CELL_WIDTH * this.view.getColumnCount();
+    }
+
+    public double getBoardHeight() {
+        return view.CELL_WIDTH * this.view.getRowCount();
     }
 
     /*
@@ -67,23 +77,6 @@ public class Controller implements EventHandler<KeyEvent> {
     }
 
     /*
-     * This method updates the data for the grid based on user input
-     */
-    private void update()
-    {
-        this.view.update(this.model);
-    }
-
-    @Override
-    public void handle(KeyEvent keyEvent)
-    {
-        this.NextGeneration.setOnAction(this::handleNextGenerationButton);
-        this.Pause.setOnAction(this::handlePauseButton);
-        this.Reset.setOnAction(this::handleResetButton);
-    }
-
-
-    /*
      * This method will handle the application's behavior when the Pause Button is clicked
      * @param actionevent The event when Pause button is clicked
      */
@@ -91,12 +84,12 @@ public class Controller implements EventHandler<KeyEvent> {
     {
         if (this.paused)
         {
-            this.Pause.setText("Pause");
+            this.pauseButton.setText("Pause");
             this.startTimer();
         }
         else
         {
-            this.Pause.setText("Continue");
+            this.pauseButton.setText("Continue");
             this.timer.cancel();
         }
         this.paused = !this.paused;
@@ -136,6 +129,4 @@ public class Controller implements EventHandler<KeyEvent> {
         this.paused = true;
         this.model.createNextGeneration();
     }
-
-
 }

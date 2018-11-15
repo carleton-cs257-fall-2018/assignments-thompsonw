@@ -19,9 +19,19 @@ public class View {
         @FXML private int rowCount;
         @FXML private int columnCount;
         private Model model;
-        private Rectangle[][] gridView;
+        public Rectangle[][] gridView;
 
         public View(){
+        }
+
+        public int getRowCount()
+        {
+            return this.rowCount;
+        }
+
+        public int getColumnCount()
+        {
+            return this.columnCount;
         }
 
         /*
