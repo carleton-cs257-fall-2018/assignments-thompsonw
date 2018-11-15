@@ -8,13 +8,11 @@ package cell_automaton;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class View {
+public class View extends Group{
         public final static double CELL_WIDTH = 10.0;
         @FXML private int rowCount;
         @FXML private int columnCount;
@@ -29,11 +27,21 @@ public class View {
             return this.rowCount;
         }
 
+        public void setRowCount(int rowCount) {
+            this.rowCount = rowCount;
+            this.initializeGrid();
+        }
+
         public int getColumnCount()
         {
             return this.columnCount;
         }
 
+        public void setColumnCount(int columnCount)
+        {
+            this.columnCount = columnCount;
+            this.initializeGrid();
+        }
         /*
          * This method will use the new data taken from update() and will construct a new grid
          */

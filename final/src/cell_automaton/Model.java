@@ -20,6 +20,7 @@ public class Model {
      */
     public Model(int rowCount, int columnCount)
     {
+        assert rowCount > 0 && columnCount > 0;
         this.grid = new CellValue[rowCount][columnCount];
         this.generation = 1;
     }

@@ -11,10 +11,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import java.awt.MouseInfo;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Controller {
+public class Controller implements EventHandler<MouseEvent>{
 
     final private double FRAMES_PER_SECOND = 30.0;
     @FXML private Button nextGenerationButton;
@@ -26,10 +29,7 @@ public class Controller {
     private Timer timer;
 
 
-    public Controller()
-    {
-        this.model = model;
-        this.view = view;
+    public Controller(){
     }
 
     public void initialize()
@@ -99,8 +99,10 @@ public class Controller {
      * This method will handle the application's behavior when one cell is clicked on and activated
      * @param actionevent The event when a cell is clicked
      */
-    public void handleCellSelection (ActionEvent actionevent, int row, int column)
+    public void handleCellSelection(MouseEvent mouseEvent)
     {
+        int row = 0;
+        int column = 0;
         if (this.model.getCellValue(row, column) == Model.CellValue.EMPTY)
         {
             this.model.setCelltoLive(row, column);
@@ -128,5 +130,12 @@ public class Controller {
     {
         this.paused = true;
         this.model.createNextGeneration();
+    }
+
+    @Override
+    public void handle(MouseEvent mouseEvent)
+    {
+        double mouseClickX = MouseInfo.getPointerInfo().getLocation().getX();
+        double mouseClickY = MouseInfo.getPointerInfo().getLocation().getY();
     }
 }
