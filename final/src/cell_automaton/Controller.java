@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,17 +17,18 @@ import java.util.TimerTask;
 
 public class Controller implements EventHandler<MouseEvent>{
 
-//    final private double FRAMES_PER_SECOND = 30.0;
     private double framePerSecond;
     @FXML private Button nextGenerationButton;
     @FXML private Button resetButton;
     @FXML private Button pauseButton;
     @FXML private Button fasterButton;
     @FXML private Button slowerButton;
+    @FXML private Label generationLabel;
     @FXML private View view;
     private Model model;
     private boolean paused;
     private Timer timer;
+
 
     public Controller()
     {
@@ -47,6 +49,7 @@ public class Controller implements EventHandler<MouseEvent>{
 
     private void update()
     {
+        this.generationLabel.setText("Generation: " + model.getGeneration());
         this.view.update(this.model);
     }
 

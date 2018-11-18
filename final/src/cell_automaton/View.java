@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Label;
 
 public class View extends Group{
 

@@ -6,21 +6,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import cell_automaton.View?>
 
-<BorderPane fx:controller="cell_automaton.Controller" xmlns:fx="http://javafx.com/fxml">
+<BorderPane fx:controller="cell_automaton.Controller" xmlns:fx="http://javafx.com/fxml" style = "-fx-background-color: #ADD8E6">
 
     <center>
         <View fx:id="view" rowCount="35" columnCount="50"/>
     </center>
 
     <bottom>
-        <AnchorPane prefHeight="35" style="-fx-padding: 10px, 5px, 10px, 5px; -fx-background-color: #1E90FF">
+        <AnchorPane prefHeight="35" style="-fx-padding: 10px, 5px, 10px, 5px; -fx-background-color: 	#808080">
 
-            <Button fx:id="pauseButton" text="Run" AnchorPane.leftAnchor="5" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
+            <Button fx:id="pauseButton" text="Run" AnchorPane.leftAnchor="6" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
             <Button fx:id="fasterButton" text="faster" AnchorPane.leftAnchor="55" AnchorPane.bottomAnchor="15" onAction="#handleFasterButton"/>
             <Button fx:id="slowerButton" text="slower" AnchorPane.leftAnchor="105" AnchorPane.bottomAnchor="15" onAction="#handleSlowerButton"/>
-            <Button fx:id="nextGenerationButton" text="Display Next Generation" AnchorPane.leftAnchor="160" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
-            <Button fx:id="resetButton" text="Reset Simulation" AnchorPane.leftAnchor="315" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
-            <Label style="-fx-font-size: 130%; -fx-text-fill: white" text="Use the Buttons to run, stop, or reset the simulation" AnchorPane.rightAnchor = "3" AnchorPane.bottomAnchor="15"/>
+            <Button fx:id="nextGenerationButton" text="Display Next Generation" AnchorPane.leftAnchor="200" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
+            <Button fx:id="resetButton" text="Reset Simulation" AnchorPane.leftAnchor="350" AnchorPane.bottomAnchor="15" onAction="#handlePauseButton"/>
+            <Label style="-fx-font-size: 130%; -fx-text-fill: white"
+                   text="Use the Buttons to run, stop, or reset the simulation" AnchorPane.rightAnchor = "3" AnchorPane.bottomAnchor="15"/>
+            <Label fx:id="generationLabel" style="-fx-font-size: 120%; -fx-text-fill: white" AnchorPane.rightAnchor = "400" AnchorPane.bottomAnchor="15"/>
 
         </AnchorPane>
     </bottom>

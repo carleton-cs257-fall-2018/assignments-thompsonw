@@ -143,6 +143,7 @@ public class Model {
                 this.grid[row][column] = CellValue.EMPTY;
             }
         }
+        this.generation = 0;
     }
 
     public CellValue getCellValue(int row, int column)
