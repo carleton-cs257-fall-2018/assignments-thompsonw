@@ -13,8 +13,9 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Game of Life");
+
         Controller controller = loader.getController();
-        //root.setOnMousePressed(controller);
+        root.setOnMouseClicked(controller);
         double sceneWidth = controller.getBoardWidth() + 20.0;
         double sceneHeight = controller.getBoardHeight() + 100.0;
         primaryStage.setScene(new Scene(root, sceneWidth, sceneHeight));

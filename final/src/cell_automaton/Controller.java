@@ -2,7 +2,6 @@
  @author Will Thompson"
  Controller for GUI Project, CS257
 */
-
 package cell_automaton;
 
 import javafx.event.EventHandler;
@@ -10,26 +9,29 @@ import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import java.awt.MouseInfo;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class Controller implements EventHandler<MouseEvent>{
 
-    final private double FRAMES_PER_SECOND = 30.0;
+//    final private double FRAMES_PER_SECOND = 30.0;
+    private double framePerSecond;
     @FXML private Button nextGenerationButton;
     @FXML private Button resetButton;
     @FXML private Button pauseButton;
+    @FXML private Button fasterButton;
+    @FXML private Button slowerButton;
     @FXML private View view;
     private Model model;
     private boolean paused;
     private Timer timer;
 
-
-    public Controller(){
+    public Controller()
+    {
+        this.paused = true;
+        this.framePerSecond = 30.0;
     }
 
     public void initialize()
@@ -38,6 +40,8 @@ public class Controller implements EventHandler<MouseEvent>{
         this.nextGenerationButton.setOnAction(this::handleNextGenerationButton);
         this.pauseButton.setOnAction(this::handlePauseButton);
         this.resetButton.setOnAction(this::handleResetButton);
+        this.fasterButton.setOnAction(this::handleFasterButton);
+        this.slowerButton.setOnAction(this::handleSlowerButton);
         this.update();
     }
 
@@ -46,17 +50,6 @@ public class Controller implements EventHandler<MouseEvent>{
         this.view.update(this.model);
     }
 
-    public double getBoardWidth() {
-        return view.CELL_WIDTH * this.view.getColumnCount();
-    }
-
-    public double getBoardHeight() {
-        return view.CELL_WIDTH * this.view.getRowCount();
-    }
-
-    /*
-     *This method builds a timer to animate each successive generation
-     */
     private void startTimer()
     {
         this.timer = new java.util.Timer();
@@ -66,20 +59,15 @@ public class Controller implements EventHandler<MouseEvent>{
                     public void run()
                     {
                         model.createNextGeneration();
-                        view.update(model);
+                        update();
                     }
                 });
             }
         };
-
-        long frameTimeInMilliseconds = (long)(1000.0 / FRAMES_PER_SECOND);
+        long frameTimeInMilliseconds = (long)(1000.0 / this.framePerSecond);
         this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 
-    /*
-     * This method will handle the application's behavior when the Pause Button is clicked
-     * @param actionevent The event when Pause button is clicked
-     */
     public void handlePauseButton (ActionEvent actionevent)
     {
         if (this.paused)
@@ -89,53 +77,93 @@ public class Controller implements EventHandler<MouseEvent>{
         }
         else
         {
-            this.pauseButton.setText("Continue");
+            this.pauseButton.setText(" Run ");
             this.timer.cancel();
         }
         this.paused = !this.paused;
+        this.update();
     }
 
-    /*
-     * This method will handle the application's behavior when one cell is clicked on and activated
-     * @param actionevent The event when a cell is clicked
-     */
-    public void handleCellSelection(MouseEvent mouseEvent)
-    {
-        int row = 0;
-        int column = 0;
-        if (this.model.getCellValue(row, column) == Model.CellValue.EMPTY)
-        {
-            this.model.setCelltoLive(row, column);
-        }
-        else
-        {
-            this.model.setCelltoEmpty(row, column);
-        }
-    }
-
-    /*
-     * This method will handle the application's behavior when the Reset Button is clicked
-     * @param actionevent The event when Reset button is clicked
-     */
     public void handleResetButton (ActionEvent actionevent)
     {
+        if (this.timer != null)
+        {
+            this.timer.cancel();
+            this.paused = true;
+            this.pauseButton.setText(" Run ");
+        }
         this.model.clearGrid();
+        this.update();
     }
 
-    /*
-     * This method will handle the application's behavior when the Next Generation Button is clicked
-     * @param actionevent The event Next Generation button is clicked
-     */
     public void handleNextGenerationButton (ActionEvent actionevent)
     {
-        this.paused = true;
+        if (this.timer != null)
+        {
+            this.timer.cancel();
+            this.paused = true;
+            this.pauseButton.setText(" Run ");
+        }
         this.model.createNextGeneration();
+        this.update();
     }
+
+    public void handleFasterButton (ActionEvent actionevent)
+    {
+        if ((this.timer != null) && (!this.paused))
+        {
+            this.timer.cancel();
+            this.framePerSecond = this.framePerSecond + 5.0;
+            this.startTimer();
+        }
+
+    }
+
+    public void handleSlowerButton (ActionEvent actionevent)
+    {
+        if ((this.timer != null) && (!this.paused))
+        {
+            this.timer.cancel();
+
+            if (this.framePerSecond != 0.0)
+            {
+                this.framePerSecond = this.framePerSecond - 5.0;
+            }
+            this.startTimer();
+        }
+    }
+
 
     @Override
     public void handle(MouseEvent mouseEvent)
     {
-        double mouseClickX = MouseInfo.getPointerInfo().getLocation().getX();
-        double mouseClickY = MouseInfo.getPointerInfo().getLocation().getY();
+        double mouseClickX = mouseEvent.getX() - 10.4;
+        double mouseClickY = mouseEvent.getY() - 19.2;
+        int rowClicked = (int)(mouseClickY / this.view.CELL_WIDTH);
+        int columnClicked = (int)(mouseClickX / this.view.CELL_WIDTH);
+
+        if (this.model.isValidCell(rowClicked, columnClicked))
+        {
+            if (this.model.getCellValue(rowClicked, columnClicked) == Model.CellValue.EMPTY)
+            {
+                this.model.setCelltoLive(rowClicked, columnClicked);
+            }
+            else if (this.model.getCellValue(rowClicked, columnClicked) == Model.CellValue.LIVE)
+            {
+                this.model.setCelltoEmpty(rowClicked, columnClicked);
+            }
+            this.update();
+            mouseEvent.consume();
+        }
+    }
+
+    public double getBoardWidth()
+    {
+        return view.CELL_WIDTH * this.view.getColumnCount();
+    }
+
+    public double getBoardHeight()
+    {
+        return view.CELL_WIDTH * this.view.getRowCount();
     }
 }
