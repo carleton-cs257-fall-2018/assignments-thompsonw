@@ -153,7 +153,6 @@ public class Model {
 
     public CellValue getCellValue(int row, int column)
     {
-        //assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
         return this.grid[row][column];
     }
 
@@ -177,7 +176,6 @@ public class Model {
      * @param row Row coordinate for a cell
      * @param column Column coordinate for a cell.
      * @returns True or False if the specified coordinates of a cell produced a valid cell.
-
      */
     public boolean isValidCell(int row, int column)
     {
