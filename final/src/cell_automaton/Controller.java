@@ -1,9 +1,10 @@
 /*
  @author Will Thompson"
  Controller for GUI Project, CS257
+ This file takes user input, such as clicking, and communicates with the model to update the simulation.
 */
-package cell_automaton;
 
+package cell_automaton;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
@@ -33,7 +34,7 @@ public class Controller implements EventHandler<MouseEvent>{
     public Controller()
     {
         this.paused = true;
-        this.framePerSecond = 30.0;
+        this.framePerSecond = 15.0;
     }
 
     public void initialize()
@@ -135,7 +136,6 @@ public class Controller implements EventHandler<MouseEvent>{
             this.startTimer();
         }
     }
-
 
     @Override
     public void handle(MouseEvent mouseEvent)

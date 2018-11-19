@@ -1,14 +1,13 @@
 /*
- *@author Will Thompson
- * View for the GUI Project, CS257
+ @author Will Thompson
+ View for the GUI Project, CS257
+ This file communicates with the model to display the data from the simulation for the users.
  */
 package cell_automaton;
-
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Label;
 
 public class View extends Group{
 
@@ -63,6 +62,9 @@ public class View extends Group{
             }
         }
 
+        /*
+         *@param model This method takes in the model to display what cells are live or empty.
+         */
         public void update(Model model)
         {
             for (int row = 0; row < this.rowCount; row++)

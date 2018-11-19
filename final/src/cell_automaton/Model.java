@@ -1,6 +1,7 @@
 /*
  @author Will Thompson"
  Model for GUI Project, CS257
+ Contains the necessary data and functionality to run a Game of Life simulation.
 */
 package cell_automaton;
 
@@ -25,8 +26,11 @@ public class Model {
     {
         int rowCount = this.grid.length;
         int columnCount = this.grid[0].length;
-        CellValue[][] tempGrid = new CellValue[rowCount][columnCount];
         this.generation++;
+
+        // Changing a cell status directly in this.grid is dangerous because a cells' neighbors suddenly loose or gain an neighbor that should not exist.
+        // A new, separate grid must be updated to what the next generation should be, and the old grid is set equal to the new grid.
+        CellValue[][] nextGenerationGrid = new CellValue[rowCount][columnCount];
 
         for (int row = 0; row < rowCount; row++)
         {
@@ -34,11 +38,12 @@ public class Model {
             {
                 if (isValidCell(row, column))
                 {
-                    tempGrid[row][column] = this.determineFutureCellStatus(row, column);
+                    // Update the temporary grid cells
+                    nextGenerationGrid[row][column] = this.determineFutureCellStatus(row, column);
                 }
             }
         }
-        this.grid = tempGrid;
+        this.grid = nextGenerationGrid;
     }
 
     private CellValue determineFutureCellStatus (int row, int column)
@@ -154,7 +159,6 @@ public class Model {
 
     public void setCelltoLive(int row, int column)
     {
-        //assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
         if (this.isValidCell(row, column))
         {
             this.grid[row][column] = CellValue.LIVE;
@@ -163,13 +167,18 @@ public class Model {
 
     public void setCelltoEmpty(int row, int column)
     {
-        //assert row >= 0 && row < this.grid.length && column >= 0 && column < this.grid[0].length;
         if (this.isValidCell(row, column))
         {
             this.grid[row][column] = CellValue.EMPTY;
         }
     }
 
+    /*
+     * @param row Row coordinate for a cell
+     * @param column Column coordinate for a cell.
+     * @returns True or False if the specified coordinates of a cell produced a valid cell.
+
+     */
     public boolean isValidCell(int row, int column)
     {
         int rowCount = this.grid.length;

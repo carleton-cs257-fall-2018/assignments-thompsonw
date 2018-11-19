@@ -1,5 +1,10 @@
-package cell_automaton;
+/*
+ @author Will Thompson"
+ Main for GUI Project, CS257
+ This file runs the simulation and creates the GUI.
+*/
 
+package cell_automaton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
