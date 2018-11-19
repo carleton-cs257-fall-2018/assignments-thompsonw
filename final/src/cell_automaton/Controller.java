@@ -1,7 +1,7 @@
 /*
  @author Will Thompson"
  Controller for GUI Project, CS257
- This file takes user input, such as clicking, and communicates with the model to update the simulation.
+ This file takes user input, such as clicking, and communicates with the model to update the simulation data.
 */
 
 package cell_automaton;
